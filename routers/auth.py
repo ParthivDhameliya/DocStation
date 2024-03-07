@@ -1,29 +1,26 @@
 import sys
 
-sys.path.append("../")
+from sqlalchemy.sql.functions import rollup
 
-from fastapi import Depends, HTTPException, status, APIRouter
+sys.path.append("../server/")
+
+from fastapi import Depends, HTTPException, status, APIRouter, Request
 from pydantic import BaseModel
 from typing import Optional
-import server.models as models
+import models as models
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
-from server.database import SessionLocal, engine
+from database import SessionLocal, engine
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 
 SECRET_KEY = "KlgH6AzYDeZeGwD288to79I3vTHT8wp7"
 ALGORITHM = "HS256"
 
-
-class CreateUser(BaseModel):
-    username: str
-    email: Optional[str]
-    first_name: str
-    last_name: str
-    password: str
-
+templates = Jinja2Templates(directory='templates')
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -89,21 +86,21 @@ async def get_current_user(token: str = Depends(oauth2_bearer)):
         raise get_user_exception()
 
 
-@router.post("/create/user")
-async def create_new_user(create_user: CreateUser, db: Session = Depends(get_db)):
-    create_user_model = models.Users()
-    create_user_model.email = create_user.email
-    create_user_model.username = create_user.username
-    create_user_model.first_name = create_user.first_name
-    create_user_model.last_name = create_user.last_name
-
-    hash_password = get_password_hash(create_user.password)
-
-    create_user_model.hashed_password = hash_password
-    create_user_model.is_active = True
-
-    db.add(create_user_model)
-    db.commit()
+# @router.post("/create/user")
+# async def create_new_user(create_user: CreateUser, db: Session = Depends(get_db)):
+#     create_user_model = models.Users()
+#     create_user_model.email = create_user.email
+#     create_user_model.username = create_user.username
+#     create_user_model.first_name = create_user.first_name
+#     create_user_model.last_name = create_user.last_name
+#
+#     hash_password = get_password_hash(create_user.password)
+#
+#     create_user_model.hashed_password = hash_password
+#     create_user_model.is_active = True
+#
+#     db.add(create_user_model)
+#     db.commit()
 
 
 @router.post("/token")
@@ -136,3 +133,8 @@ def token_exception():
         headers={"WWW-Authenticate": "Bearer"},
     )
     return token_exception_response
+
+
+@router.get("/", response_class=HTMLResponse)
+async def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})

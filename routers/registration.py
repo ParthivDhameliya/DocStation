@@ -1,13 +1,13 @@
 import sys
 
-sys.path.append("..")
+sys.path.append("../server")
 
-from typing import Optional
-from fastapi import Depends, HTTPException, APIRouter
-import server.models as models
-from server.database import engine, SessionLocal
+from fastapi import Depends, APIRouter, Request
+import models as models
+from database import engine, SessionLocal
 from sqlalchemy.orm import Session
-from pydantic import BaseModel, Field
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 
 
 router = APIRouter(
@@ -18,6 +18,8 @@ router = APIRouter(
 
 models.Base.metadata.create_all(bind=engine)
 
+templates = Jinja2Templates(directory='templates')
+
 
 def get_db():
     try:
@@ -27,14 +29,14 @@ def get_db():
         db.close()
 
 
-# class Todo(BaseModel):
-#     title: str
-#     description: Optional[str]
-#     priority: int = Field(gt=0, lt=6, description="The priority must be between 1-5")
-#     complete: bool
+@router.get("/", response_class=HTMLResponse)
+async def registration_form(request: Request):
+    return templates.TemplateResponse("registration.html", {"request": request})
 
 
-@router.get("/")
-async def read_all(db: Session = Depends(get_db)):
-    return db.query(models.Guardian).all()
+@router.post("/", response_class=HTMLResponse)
+async def registration(request: Request):
+    pass
+
+
 
