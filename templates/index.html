@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doc AutomationSystem</title>
+  <!-- Include Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Include HTMX JS -->
+  <script src="https://unpkg.com/htmx.org@1.6.1"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('static/images/image2.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100vh;
+    }
+    .navbar {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .navbar-brand,
+    .nav-link {
+      color: #fff;
+    }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    .photo-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+    .btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+    }
+    .btn-secondary:hover {
+      background-color: #5a6268;
+      border-color: #545b62;
+    }
+    .survey-link,
+    .question-link {
+      color: #007bff;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .survey-link:hover,
+    .question-link:hover {
+      color: #0056b3;
+    }
+    .btn-row {
+      text-align: center;
+    }
+    .clinic-info {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Doc AutomationSystem</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link survey-link" href="#">Survey</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link login-link" href="#" hx-get="/login">Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+   
+     
+    
+    <!-- Placeholder for login form loaded via HTMX -->
+    <div id="loginContainer" hx-target="#loginContainer" hx-swap="outerHTML" hx-get="/login"></div>
+
+    <!-- Clinic Info -->
+    <div class="clinic-info text-center mt-3">
+      <h1>HEALTHCARE CLINIC</h1>
+      <h4>CONTACT: (999) 999-9999</h4>
+      <h4>ADDRESS: 1000 KLO Rd. Kelowna, BC, Canada</h4>
+      <h4>EMAIL: XYZ@gmail.com</h4>
+    </div>
+  </div>
+
+  <div class="btn-row mt-3">
+    <button class="btn btn-primary mx-2 mb-5" onclick="window.location.href='/survey'">Take Survey</button>
+    <button class="btn btn-secondary mx-2 mb-5" onclick="window.location.href='/questions'">Questions</button>
+  </div>
+
+  <!-- Include Bootstrap JS (optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
