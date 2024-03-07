@@ -7,13 +7,15 @@ from datetime import datetime
 class Registration(Base):
     __tablename__ = "registrations"
 
-    id = Column(Integer, primary_key=True, index=True)
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, primary_key=True)
     patientPrefix = Column(String)
     firstName = Column(String)
     middleName = Column(String)
-    preferredName = Column(String)
     lastName = Column(String)
-    email = Column(String, unique=True, index=True)
+    preferredName = Column(String)
+    email = Column(String, unique=True)
     mobile = Column(Integer)
     homeNumber = Column(Integer)
     birthDate = Column(Date)
@@ -31,20 +33,28 @@ class Registration(Base):
     emergencyContactName = Column(String)
     emergencyContactEmail = Column(String)
     emergencyContactNumber = Column(Integer)
-    contactNumber = Column(Integer)
+    currentDate = Column(Date, default=datetime.now())
 
     # owner = relationship("Users", back_populates="todos")
 
 
+class Guardian(Base):
+    __tablename__ = "guardians"
 
+    __table_args__ = {'extend_existing': True}
 
-
-
-
-
-
-
-
-
-
-
+    id = Column(Integer, primary_key=True)
+    prefixGuardian = Column(String)
+    firstName = Column(String)
+    middleName = Column(String)
+    lastName = Column(String)
+    preferredName = Column(String)
+    contactNumber = Column(Integer)
+    sameAddressAsAbove = Column(Boolean)
+    street = Column(String)
+    apt = Column(Integer)
+    city = Column(String)
+    province = Column(String)
+    postalCode = Column(String)
+    country = Column(String)
+    patient_id = Column(Integer, ForeignKey("registrations.id"))
