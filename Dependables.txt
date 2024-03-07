@@ -1,0 +1,2 @@
+Install Pgadmin
+Install psycopg2 library
